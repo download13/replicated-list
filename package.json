@@ -1,0 +1,31 @@
+{
+  "name": "replicated-list",
+  "version": "0.0.0",
+  "description": "A List with tools to easily keep replicas in sync",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/download13/replicated-list.git"
+  },
+  "keywords": [
+    "list",
+    "array",
+    "replicated",
+    "synchronized"
+  ],
+  "author": "Erin Dachtler <download333@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/download13/replicated-list/issues"
+  },
+  "homepage": "https://github.com/download13/replicated-list#readme",
+  "devDependencies": {
+    "through2": "^2.0.0"
+  }
+}
