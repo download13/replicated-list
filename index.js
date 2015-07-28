@@ -38,7 +38,7 @@ ReplicatedList.prototype.push = function(value) {
 ReplicatedList.prototype.pop = function() {
 	var value = this._state.pop();
 
-	this.emit('pop');
+	this.emit('pop', value);
 
 	return value;
 };
@@ -52,15 +52,17 @@ ReplicatedList.prototype.unshift = function(value) {
 ReplicatedList.prototype.shift = function() {
 	var value = this._state.shift();
 
-	this.emit('shift');
+	this.emit('shift', value);
 
 	return value;
 };
 
 ReplicatedList.prototype.splice = function(start, count) {
-	var removed = this._state.splice.apply(this._state, arguments);
+	var args = slice.call(arguments);
 
-	this.emit.apply(this, ['splice'].concat(arguments));
+	var removed = this._state.splice.apply(this._state, args);
+
+	this.emit.apply(this, ['splice'].concat(args));
 
 	return removed;
 };
