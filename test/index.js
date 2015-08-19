@@ -22,10 +22,10 @@ describe('ReplicatedList', function() {
 		assert(el.replicate);
 	});
 
-	it('has an cmd method', function() {
+	it('has an mutate method', function() {
 		var el = new ReplicatedList();
 
-		assert(el.cmd);
+		assert(el.mutate);
 	});
 
 	it('has a push method', function() {
@@ -252,18 +252,18 @@ describe('ReplicatedList', function() {
 		el.splice(1, 2, 5, 7);
 	});
 
-	it('accepts commands from a compatible list', function() {
+	it('accepts mutations from a compatible list', function() {
 		var el = new ReplicatedList([4, 2, 8, 3]);
 
-		el.cmd('remove', 2);
-		el.cmd('remove', 1);
+		el.mutate('remove', 2);
+		el.mutate('remove', 1);
 
 		assert.equal(el.length, 2);
 		assert.equal(el.get(0), 4);
 		assert.equal(el.get(1), 3);
 
-		el.cmd('add', 0, 1);
-		el.cmd('add', 3, 0);
+		el.mutate('add', 0, 1);
+		el.mutate('add', 3, 0);
 
 		assert.equal(el.length, 4);
 		assert.equal(el.get(0), 1);

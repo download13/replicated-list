@@ -1,6 +1,6 @@
 export default class ReplicatedList {
 	constructor(list) {
-		this.cmd = this.cmd.bind(this);
+		this.mutate = this.mutate.bind(this);
 
 		this._handlers = new Set();
 
@@ -18,7 +18,7 @@ export default class ReplicatedList {
 	}
 
 	pop() {
-		var removedItem = this._state.pop();
+		let removedItem = this._state.pop();
 
 		this._emit('remove', this._state.length, removedItem);
 
@@ -32,7 +32,7 @@ export default class ReplicatedList {
 	}
 
 	shift() {
-		var removedItem = this._state.shift();
+		let removedItem = this._state.shift();
 
 		this._emit('remove', 0, removedItem);
 
@@ -40,7 +40,7 @@ export default class ReplicatedList {
 	}
 
 	splice(startIndex, removeCount, ...addItems) {
-		var removedItems = this._state.splice(startIndex, removeCount, ...addItems);
+		let removedItems = this._state.splice(startIndex, removeCount, ...addItems);
 
 		removedItems.forEach((item, i) => {
 			this._emit('remove', startIndex + i, item);
@@ -77,7 +77,7 @@ export default class ReplicatedList {
 	}
 
 
-	cmd(type, index, item) {
+	mutate(type, index, item) {
 		switch(type) {
 		case 'add':
 			this.splice(index, 0, item);

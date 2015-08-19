@@ -1,13 +1,13 @@
 {
   "name": "replicated-list",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A List with tools to easily keep replicas in sync",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "npm run compile && mocha",
     "compile": "babel -d lib/ src/",
     "prepublish": "npm run compile"
   },

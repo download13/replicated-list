@@ -55,7 +55,7 @@ var list = new ReplicatedList();
 network.on('data', function(message) {
 	message = JSON.parse(message);
 
-	list.cmd(message[0], message[1], message[2]);
+	list.mutate(message[0], message[1], message[2]);
 });
 
 // list will now follow the leader at the other end of the
@@ -99,8 +99,8 @@ list.replicate(function(type, index, item) {
 * `.clear()` - Clears all elements from the list
 * `.forEach(fn)` - fn(value, index) is executed once for each item in the list
 * `.map(fn)` - fn(value, index) is executed once for each item in the list returning an array of the results of fn
-* `.cmd(command, arguments)` - Executes the given command on this map
-* `.replicate(fn)` - Calls fn(cmd, args) once for each command needed to replicate the state of this map to another map
+* `.mutate(type, index, item)` - Performs the given mutating on this list
+* `.replicate(fn)` - Calls fn(type, key, value) once for each mutate event needed to replicate the state of this list to another list
 
 
 ## Notes
@@ -108,3 +108,5 @@ list.replicate(function(type, index, item) {
 The method used to stream data must carry the messages IN ORDER. If the messages are out of order the accuracy of the replication cannot be guaranteed. Imagine doing `push 3` and `push 7`. If they are out of the order the older the array contents will be out of order as well.
 
 Do not call the mutating methods on a following list, this will result in the follower getting out of sync with the leader.
+
+This module depends on `Set` being available, so if you are targeting a browser without support for `Set` you may need to `require('core-js/fn/set')` the [polyfill](https://github.com/zloirock/core-js).
