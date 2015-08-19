@@ -28,8 +28,6 @@
   },
   "homepage": "https://github.com/download13/replicated-list#readme",
   "devDependencies": {
-    "babel": "^5.8.21",
-    "core-js": "^1.1.0",
-    "through2": "^2.0.0"
+    "babel": "^5.8.21"
   }
 }
