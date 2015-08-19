@@ -28,21 +28,17 @@ Pretty standard stuff for a list type. Here's what makes this one interesting th
 ### Leader
 
 ```javascript
-// Can also be called without new
-var list = require('replicated-list')();
+var list = new ReplicatedList();
 
 list.push(0);
 
 // Start replicating
-list.replicate(function(cmd, args) {
+list.replicate(function(type, index, item) {
 	// This function will be called every time
 	// there's a new command to replicate
 
 	// Just pretend we set this network connection up earlier
-	network.write(JSON.stringify({
-		cmd: cmd,
-		args: args
-	}));
+	network.write(JSON.stringify([type, index, item]));
 });
 
 // All mutating commands will be replicated to the follower
@@ -53,13 +49,13 @@ list.unshift('another_new_element');
 ### Follower
 
 ```javascript
-var list = require('replicated-list')();
+var list = new ReplicatedList();
 
 // Again, just pretend
 network.on('data', function(message) {
 	message = JSON.parse(message);
 
-	list.cmd(message.cmd, message.args);
+	list.cmd(message[0], message[1], message[2]);
 });
 
 // list will now follow the leader at the other end of the
@@ -78,35 +74,18 @@ setTimeout(function() {
 
 ## Events
 
-The list is also an event emitter which emits the following events.
+You may also listen to changes in the list for arbitrary purposes.
 
 ```javascript
-list.on('push', function(value) {
-	// Update some state or something
-	console.log(value + ' was pushed onto list');
-});
-
-list.on('pop', function(oldValue) {
-	console.log(oldValue + ' was popped from list');
-});
-
-list.on('unshift', function(value) {
-	console.log(value + ' was unshifted onto list');
-});
-
-list.on('shift', function(oldValue) {
-	console.log(oldValue + ' was shifted from list');
-});
-
-list.on('splice', function(start, count, firstAdded) {
-	console.log('A splice started at index ' + start +
-		' resulting in the removal of ' + count +
-		' items and the addition of ' + firstAdded);
-	// Note that there may be an arbitrary number of added elements
-});
-
-list.on('clear', function() {
-	console.log('Oh no! Everything is gone!');
+list.replicate(function(type, index, item) {
+	// type will be 'add' or 'remove'
+	switch(type) {
+	case 'add':
+		addElementToView(item, index);
+		break;
+	case 'remove':
+		removeElementFromView(index);
+	}
 });
 ```
 
@@ -128,4 +107,4 @@ list.on('clear', function() {
 
 The method used to stream data must carry the messages IN ORDER. If the messages are out of order the accuracy of the replication cannot be guaranteed. Imagine doing `push 3` and `push 7`. If they are out of the order the older the array contents will be out of order as well.
 
-Do not call the mutating methods on a following list, this will result in the follower being out of sync with the leader.
+Do not call the mutating methods on a following list, this will result in the follower getting out of sync with the leader.

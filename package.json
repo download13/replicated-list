@@ -1,13 +1,15 @@
 {
   "name": "replicated-list",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A List with tools to easily keep replicas in sync",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "compile": "babel -d lib/ src/",
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,8 @@
   },
   "homepage": "https://github.com/download13/replicated-list#readme",
   "devDependencies": {
+    "babel": "^5.8.21",
+    "core-js": "^1.1.0",
     "through2": "^2.0.0"
   }
 }
