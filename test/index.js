@@ -1,4 +1,4 @@
-var ReplicatedList = require('../lib');
+var ReplicatedList = require('../');
 
 var assert = require('assert');
 
